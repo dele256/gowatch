@@ -33,3 +33,17 @@ Usage of gowatch:
   * -w string
         
         watch directory, directory to recursively watch (default "./")
+
+---
+Makefile example to run a make command and to only watch go files:
+---
+```
+gowatch -c "make run" -f go
+```
+
+Then inside the Makefile we can something like this:
+```makefile
+run:
+      go build -o build/example.out main.go
+      (cd build && ./example.out)
+```

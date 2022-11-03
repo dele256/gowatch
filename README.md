@@ -41,7 +41,7 @@ Makefile example to run a make command and to only watch go files:
 gowatch -c "make run" -f go
 ```
 
-Then inside the Makefile we can something like this:
+Then inside the Makefile we can have something like this:
 ```makefile
 run:
       go build -o build/example.out main.go

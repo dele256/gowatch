@@ -30,6 +30,9 @@ Usage of gowatch:
   * -f string
         
         comma separated extensions to watch e.g. "go,cc,c,h" (default="")
+  * -g
+      
+        include .git folder (default=false)
   * -w string
         
         watch directory, directory to recursively watch (default "./")

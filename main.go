@@ -20,6 +20,7 @@ var (
 	cmdDir string
 	watch  string
 	filter string
+	incGit bool
 )
 
 func init() {
@@ -27,6 +28,7 @@ func init() {
 	flag.StringVar(&cmdDir, "d", "./", "run directory, the directory to run the command in")
 	flag.StringVar(&watch, "w", "./", "watch directory, directory to recursively watch")
 	flag.StringVar(&filter, "f", "", "comma separated extensions to watch e.g. \"go,cc,c,h\" (default=\"\")")
+	flag.BoolVar(&incGit, "g", false, "include .git folder (defautl=false)")
 }
 
 func main() {
@@ -136,8 +138,15 @@ func main() {
 		done <- struct{}{}
 	}(d)
 
+	beginGit := filepath.FromSlash(".git/")
+	endGit := filepath.FromSlash("/.git")
+	anyGit := filepath.FromSlash("/.git/")
+
 	err = filepath.Walk(watch, func(path string, f os.FileInfo, err error) error {
 		if f.IsDir() {
+			if !incGit && (strings.HasPrefix(path, beginGit) || strings.HasSuffix(path, endGit) || strings.Contains(path, anyGit) || path == ".git") {
+				return nil
+			}
 			log.Printf("gowatch: watching: %v\n", path)
 			if err := watcher.Add(path); err != nil {
 				log.Printf("gowatch: failed to watch: %v\n", path)
